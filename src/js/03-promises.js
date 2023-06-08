@@ -2,8 +2,8 @@ import Notiflix from 'notiflix';
 
 const formEl = document.querySelector('.form');
 
-formEl.addEventListener('submit', event => {
-  event.preventDefault();
+formEl.addEventListener('submit', e => {
+  e.preventDefault();
 
   let delay = Number(formEl.elements.delay.value);
   const step = Number(formEl.elements.step.value);
@@ -19,7 +19,7 @@ formEl.addEventListener('submit', event => {
         }, delay);
       },({ position, delay }) => {
         setTimeout(() => {
-                    Notiflix.Notify.failure(
+            Notiflix.Notify.failure(
             `❌ Rejected promise ${position} in ${delay}ms`
           );
         }, delay);
