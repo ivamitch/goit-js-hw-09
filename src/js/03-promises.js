@@ -1,20 +1,41 @@
-const inputDelay = document.querySelector('input[name="delay"]');
-const inputStep = document.querySelector('input[name="step"]');
-const inputAmount = document.querySelector('input[name="amount"]');
+import Notiflix from 'notiflix';
+
 const formEl = document.querySelector('.form');
-// console.log(inputDelay)
 
-formEl.addEventListener('submit', evt => { 
-  evt.preventDefault();
-})
+formEl.addEventListener('submit', event => {
+  event.preventDefault();
 
+  let delay = Number(formEl.elements.delay.value);
+  const step = Number(formEl.elements.step.value);
+  const position = Number(formEl.elements.amount.value);
 
+  for (let i = 1; i <= position; i += 1) {
+    createPromise(i, delay)
+      .then(({ position, delay }) => {
+        setTimeout(() => {
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${delay}ms`
+          );
+        }, delay);
+      },({ position, delay }) => {
+        setTimeout(() => {
+                    Notiflix.Notify.failure(
+            `❌ Rejected promise ${position} in ${delay}ms`
+          );
+        }, delay);
+      } )
+    delay += step;
+  }
+});
 
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
+
+  return new Promise((resolve, reject) => {
+    if (shouldResolve) {
+      resolve({ position, delay });
+    } else {
+      reject({ position, delay });
+    }
+  });
 }
