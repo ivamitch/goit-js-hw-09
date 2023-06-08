@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const textInput = document.getElementById('datetime-picker');
 const startButton = document.querySelector('button[data-start]');
@@ -19,7 +20,7 @@ const options = {
     onClose(selectedDates) {
         utcTime = selectedDates[0].getTime();
         if (utcTime < options.defaultDate) {
-            window.alert("Please choose a date in the future");
+            Notiflix.Notify.failure("Please choose a date in the future");
         } else {
             startButton.disabled = false;
         }
@@ -63,12 +64,11 @@ function onStartClick() {
         const restTime = utcTime - currentTime;
         const convertedTime = convertMs(restTime);
         spanTimeUpdate(convertedTime);
-        console.log(convertedTime)
 
         if (restTime < 1000) {
         clearInterval(indervalId)
         textInput.disabled = false;
-        window.alert('Countdown is finished!');
+        Notiflix.Notify.success('Countdown is finished!');
     }
     }, 1000)
 }
